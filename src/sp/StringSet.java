@@ -70,6 +70,7 @@ public class StringSet implements Trie {
         if (from == element.length()) {
             boolean back = terminal;
             terminal = false;
+            size -= back ? 1 : 0;
             return back ? 1 : 0;
         } else {
             StringSet node = set.get(element.charAt(from));
