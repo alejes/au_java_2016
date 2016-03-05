@@ -129,6 +129,10 @@ public class StringSetTest {
     public void testContains() throws Exception {
         Trie trie = new StringSet();
         assertFalse(trie.contains(""));
+        assertTrue(trie.add(""));
+        assertTrue(trie.contains(""));
+        assertTrue(trie.remove(""));
+        assertFalse(trie.contains(""));
         assertFalse(trie.contains("Z"));
         assertTrue(trie.add("Z"));
         assertTrue(trie.contains("Z"));
