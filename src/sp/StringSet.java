@@ -81,8 +81,9 @@ public final class StringSet implements Trie, StreamSerializable {
                 return false;
             } else {
                 boolean res = node.removeFrom(element, from + 1);
-                if (res)
+                if (res) {
                     size -= 1;
+                }
                 if (size == 0) {
                     set.clear();
                 }

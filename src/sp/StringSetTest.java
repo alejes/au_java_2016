@@ -215,7 +215,7 @@ public class StringSetTest {
         assertTrue(trie.contains("aaalkw"));
         assertTrue(trie.contains("anbzs"));
         assertEquals(5, trie.size());
-        assertEquals(4,trie.howManyStartsWithPrefix("a"));
+        assertEquals(4, trie.howManyStartsWithPrefix("a"));
         assertEquals(2, trie.howManyStartsWithPrefix("an"));
         assertFalse(trie.contains(""));
         assertFalse(trie.contains("a"));
