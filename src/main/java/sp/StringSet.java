@@ -1,17 +1,19 @@
 package sp;
 
+import java.io.*;
 import java.util.HashMap;
+import java.util.Map;
 
 /**
  * Created by Alexey on 21.02.2016.
  */
-public class StringSet implements Trie {
-    private HashMap<Character, StringSet> set;
+public final class StringSet implements Trie, StreamSerializable {
+    private final HashMap<Character, StringSet> set;
     private int size;
-    boolean terminal;
+    private boolean terminal;
 
     public StringSet() {
-        set = new HashMap<>();
+        set = new HashMap<Character, StringSet>();
         terminal = false;
     }
 
@@ -22,9 +24,9 @@ public class StringSet implements Trie {
 
     private boolean addFrom(String element, int from) {
         if (from == element.length()) {
-            if (terminal)
+            if (terminal) {
                 return false;
-            else {
+            } else {
                 size++;
                 terminal = true;
                 return true;
@@ -36,8 +38,9 @@ public class StringSet implements Trie {
                 set.put(element.charAt(from), node);
             }
             boolean succ = node.addFrom(element, from + 1);
-            if (succ)
+            if (succ) {
                 ++size;
+            }
             return succ;
         }
 
@@ -62,25 +65,28 @@ public class StringSet implements Trie {
 
     @Override
     public boolean remove(String element) {
-        return removeFrom(element, 0) > 0;
+        return removeFrom(element, 0);
     }
 
-    private int removeFrom(String element, int from) {
+    private boolean removeFrom(String element, int from) {
 
         if (from == element.length()) {
             boolean back = terminal;
             terminal = false;
             size -= back ? 1 : 0;
-            return back ? 1 : 0;
+            return back;
         } else {
             StringSet node = set.get(element.charAt(from));
             if (node == null) {
-                return 0;
+                return false;
             } else {
-                int res = node.removeFrom(element, from + 1);
-                size -= res;
-                if (size == 0)
+                boolean res = node.removeFrom(element, from + 1);
+                if (res) {
+                    size -= 1;
+                }
+                if (size == 0) {
                     set.clear();
+                }
                 return res;
             }
         }
@@ -105,5 +111,38 @@ public class StringSet implements Trie {
                 return 0;
             } else return node.howManyStartsWithPrefixFrom(element, from + 1);
         }
+    }
+
+
+    @Override
+    public void serialize(OutputStream out) throws IOException {
+        DataOutputStream os = new DataOutputStream(out);
+        os.writeInt(size);
+        os.writeBoolean(terminal);
+
+        os.writeInt(set.size());
+        for (Map.Entry<Character, StringSet> item : set.entrySet()) {
+            Character key = item.getKey();
+            StringSet value = item.getValue();
+            os.writeChar(key);
+            value.serialize(os);
+        }
+    }
+
+    @Override
+    public void deserialize(InputStream in) throws IOException {
+        set.clear();
+        DataInputStream os = new DataInputStream(in);
+        size = os.readInt();
+        terminal = os.readBoolean();
+        int count = os.readInt();
+
+        for (int i = 0; i < count; ++i) {
+            Character key = os.readChar();
+            StringSet nw = new StringSet();
+            set.put(key, nw);
+            nw.deserialize(in);
+        }
+
     }
 }
