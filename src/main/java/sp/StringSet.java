@@ -13,7 +13,7 @@ public final class StringSet implements Trie, StreamSerializable {
     private boolean terminal;
 
     public StringSet() {
-        set = new HashMap<>();
+        set = new HashMap<Character, StringSet>();
         terminal = false;
     }
 

@@ -20,7 +20,11 @@ public class StringSetTest {
     public static Trie instance() {
         try {
             return (Trie) Class.forName("sp.StringSet").newInstance();
-        } catch (InstantiationException | IllegalAccessException | ClassNotFoundException e) {
+        } catch (InstantiationException  e) {
+            throw new IllegalStateException(e);
+        } catch (ClassNotFoundException e) {
+            throw new IllegalStateException(e);
+        } catch (IllegalAccessException e) {
             throw new IllegalStateException(e);
         }
     }
