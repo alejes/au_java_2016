@@ -1,4 +1,4 @@
-package sp;
+package main.java.sp;
 
 import java.io.*;
 import java.util.HashMap;

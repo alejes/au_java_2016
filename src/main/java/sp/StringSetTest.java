@@ -1,4 +1,4 @@
-package sp;
+package main.java.sp;
 
 import org.junit.Test;
 
@@ -205,6 +205,7 @@ public class StringSetTest {
         assertTrue(trie.add("anbzs"));
         assertTrue(trie.add("saal"));
         assertTrue(trie.add("aaalkw"));
+        assertEquals(5, trie.size());
 
         ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
         ((StreamSerializable) trie).serialize(outputStream);
@@ -213,18 +214,18 @@ public class StringSetTest {
         Trie newTrie = instance();
         ((StreamSerializable) newTrie).deserialize(inputStream);
 
-        assertTrue(trie.contains("abnmerfcre"));
-        assertTrue(trie.contains("anbjs"));
-        assertTrue(trie.contains("saal"));
-        assertTrue(trie.contains("aaalkw"));
-        assertTrue(trie.contains("anbzs"));
-        assertEquals(5, trie.size());
-        assertEquals(4, trie.howManyStartsWithPrefix("a"));
-        assertEquals(2, trie.howManyStartsWithPrefix("an"));
-        assertFalse(trie.contains(""));
-        assertFalse(trie.contains("a"));
-        assertTrue(trie.remove("saal"));
-        assertEquals(4, trie.size());
+        assertTrue(newTrie.contains("abnmerfcre"));
+        assertTrue(newTrie.contains("anbjs"));
+        assertTrue(newTrie.contains("saal"));
+        assertTrue(newTrie.contains("aaalkw"));
+        assertTrue(newTrie.contains("anbzs"));
+        assertEquals(5, newTrie.size());
+        assertEquals(4, newTrie.howManyStartsWithPrefix("a"));
+        assertEquals(2, newTrie.howManyStartsWithPrefix("an"));
+        assertFalse(newTrie.contains(""));
+        assertFalse(newTrie.contains("a"));
+        assertTrue(newTrie.remove("saal"));
+        assertEquals(4, newTrie.size());
     }
 
 }
