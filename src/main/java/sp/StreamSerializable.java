@@ -1,4 +1,4 @@
-package main.java.sp;
+package sp;
 
 import java.io.IOException;
 import java.io.InputStream;

@@ -1,4 +1,4 @@
-package main.java.sp;
+package sp;
 
 public interface Trie {
 

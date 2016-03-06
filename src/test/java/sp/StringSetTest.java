@@ -1,6 +1,9 @@
-package main.java.sp;
+package sp;
 
 import org.junit.Test;
+import sp.StreamSerializable;
+import sp.StringSet;
+import sp.Trie;
 
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
