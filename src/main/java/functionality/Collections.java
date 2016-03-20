@@ -62,15 +62,8 @@ public class Collections {
         }
         else return init;
     }
+
     public static <A, R> R foldr(Function2<A, R, R > f,  R init, Iterable<A> it) {
         return foldr_use(f, init, it.iterator());
     }
-    /*
-    public static <A, R> R foldr(Function2<A, R, R > f,  R init, Iterable<A> it) {
-        for (A el : it){
-            init = f.apply(el, init);
-        }
-        return init;
-    }
-    */
 }
