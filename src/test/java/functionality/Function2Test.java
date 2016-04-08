@@ -1,62 +1,35 @@
 package functionality;
 
-import org.junit.Assert;
 import org.junit.Test;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
 
 /**
  * Created by Alexey on 18.03.2016.
  */
 public class Function2Test {
-    class FunPlus5 implements  Function1<Integer, Integer>{
-        @Override
-        public Integer apply(Integer arg) {
-            return arg + 5;
-        }
-    }
-    class FunMult10 implements  Function1<Integer, Integer>{
-        @Override
-        public Integer apply(Integer arg) {
-            return arg * 10;
-        }
-    }
 
-    class Sum implements  Function2<Integer, Integer, Integer>{
-        @Override
-        public Integer apply(Integer arg1, Integer arg2) {
-            return arg1 + arg2;
-        }
-    }
-
-    class Div implements  Function2<Integer, Integer, Double>{
-        @Override
-        public Double apply(Integer arg1, Integer arg2) {
-            return arg1.doubleValue() / arg2.doubleValue();
-        }
-    }
     @Test
     public void testApply() throws Exception {
         Sum plus = new Sum();
-        assertEquals(23, (int)plus.apply(10, 13));
+        assertEquals(23, (int) plus.apply(10, 13));
     }
 
 
     @Test
     public void testCompose() throws Exception {
-        FunPlus5 p5 = new FunPlus5();
         FunMult10 m10 = new FunMult10();
         Sum plus = new Sum();
 
         Function2<Integer, Integer, Integer> plustm10 = plus.compose(m10);
-        assertEquals(230, (int)plustm10.apply(10, 13));
+        assertEquals(230, (int) plustm10.apply(10, 13));
     }
 
     @Test
     public void testBind1() throws Exception {
         Sum plus = new Sum();
         Function1<Integer, Integer> plus5 = plus.bind1(5);
-        assertEquals(54, (int)plus5.apply(49));
+        assertEquals(54, (int) plus5.apply(49));
 
         Div div = new Div();
         Function1<Integer, Double> divFrom100 = div.bind1(100);
@@ -77,8 +50,27 @@ public class Function2Test {
         Function1 plus21 = plus1Arg.apply(21);
         assertEquals(50, plus21.apply(29));
 
-       //assertTrue(Predicate.ALWAYS_TRUE.apply(new Object()));
     }
 
+    private static class FunMult10 implements Function1<Integer, Integer> {
+        @Override
+        public Integer apply(Integer arg) {
+            return arg * 10;
+        }
+    }
+
+    private static class Sum implements Function2<Integer, Integer, Integer> {
+        @Override
+        public Integer apply(Integer arg1, Integer arg2) {
+            return arg1 + arg2;
+        }
+    }
+
+    private static class Div implements Function2<Integer, Integer, Double> {
+        @Override
+        public Double apply(Integer arg1, Integer arg2) {
+            return arg1.doubleValue() / arg2.doubleValue();
+        }
+    }
 
 }
