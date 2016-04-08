@@ -31,9 +31,6 @@ public final class FirstPartTasks {
 
     // Список альбомов, в которых есть хотя бы один трек с рейтингом более 95, отсортированный по названию
     public static List<Album> sortedFavorites(Stream<Album> s) {
-        //return s.map(alb -> alb.getTracks().stream()).filter(track -> track.anyMatch(x -> true)).flatMap(Function.identity()).sorted().collect(Collectors.toList());
-        //return s.collect(Collectors.groupingBy(Function.identity())).entrySet().stream().map((x, y)-> Map.Entry(x, ((List<Album>) x).stream())).
-        //x -> x.getTracks().stream()
         return s.filter(alb -> alb.getTracks().stream().anyMatch(x -> x.getRating() > 95)).sorted((x, y) -> x.getName().compareTo(y.getName())).collect(Collectors.toList());
     }
 
@@ -44,19 +41,6 @@ public final class FirstPartTasks {
 
     // Сгруппировать альбомы по артистам (в качестве значения вместо объекта 'Artist' использовать его имя)
     public static Map<Artist, List<String>> groupByArtistMapName(Stream<Album> albums) {
-        //return albums.collect(Collectors.groupingBy(album -> album.getName(), Collectors.mapping(Album::getArtist, Collectors.toList())));
-        //album -> album.getName()
-        //return albums.collect(Collectors.groupingBy(Function.identity(), Collectors.mapping(album -> album.getArtist().getName(), Collectors.toList())));
-        /*
-        return albums.collect(
-                Collectors.groupingBy(
-                        Function.identity(),
-                        Collectors.mapping(
-                                album -> album.getArtist().getName(),
-                                Collectors.collectingAndThen(
-                                        Collectors.toList(), Function.identity()
-                                ))));
-                                */
         return albums.collect(
                 Collectors.groupingBy(
                         Album::getArtist,
@@ -80,7 +64,6 @@ public final class FirstPartTasks {
         }
         Holder hold = new Holder();
         long dist = albums.peek(e -> hold.increment()).distinct().count();
-        //Collectors.groupingBy(Phone::getCompany, Collectors.summingInt(Phone::getPrice)));
         return hold.value - dist;
     }
 
@@ -100,10 +83,6 @@ public final class FirstPartTasks {
 
     // Список альбомов, отсортированный по убыванию среднего рейтинга его треков (0, если треков нет)
     public static List<Album> sortByAverageRating(Stream<Album> albums) {
-
-        //Object xxxxxx = albums.sorted(album -> album.getTracks().stream().mapToInt(Track::getRating).average().orElse(0)).collect(Collectors.toList());
-        //Object xxxxxx = albums.sorted(Comparator.comparing(o1 -> ((Album)o1).getTracks().stream().mapToInt(Track::getRating).average().orElse(0)).reversed());
-
         return albums.sorted(Comparator.comparing(o1 -> ((Album) o1).getTracks().stream().mapToInt(Track::getRating).average().orElse(0)).reversed()).collect(Collectors.toList());
     }
 
@@ -116,12 +95,11 @@ public final class FirstPartTasks {
     // Вернуть строку, состояющую из конкатенаций переданного массива, и окруженную строками "<", ">"
     // см. тесты
     public static String joinTo(String... strings) {
-        //return "<" + Stream.of(strings).reduce((s, s2) -> s + ", " + s2).orElse("") + ">";
         return Stream.of(strings).collect(Collectors.joining(", ", "<", ">"));
     }
 
     // Вернуть поток из объектов класса 'clazz'
     public static <R> Stream<R> filterIsInstance(Stream<?> s, Class<R> clazz) {
-        return s.filter(clazz::isInstance).map(o -> clazz.cast(o));
+        return s.filter(clazz::isInstance).map(clazz::cast);
     }
 }
