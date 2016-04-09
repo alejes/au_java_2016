@@ -10,7 +10,7 @@ import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 import java.util.stream.Stream;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
 import static ru.spbau.stepanov.linq.FirstPartTasks.*;
 
 public class FirstPartTasksTest {
