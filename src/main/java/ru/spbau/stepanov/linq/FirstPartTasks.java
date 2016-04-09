@@ -55,6 +55,8 @@ public final class FirstPartTasks {
 
     // Число повторяющихся альбомов в потоке
     public static long countAlbumDuplicates(Stream<Album> albums) {
+        /*
+        Извиняюсь за не используемый код, но хотелось бы получить комментарии о преимуществах/недостатках такого решения.
         class Holder {
             long value = 0;
 
@@ -65,6 +67,17 @@ public final class FirstPartTasks {
         Holder hold = new Holder();
         long dist = albums.peek(e -> hold.increment()).distinct().count();
         return hold.value - dist;
+        */
+
+        return albums.collect(
+                Collectors.groupingBy(
+                        Function.identity(),
+                        Collectors.counting())
+        ).entrySet().stream().
+                map(
+                        albumLongEntry ->
+                                albumLongEntry.getValue() > 0 ? albumLongEntry.getValue() - 1 : 0
+                ).reduce((long) 0, (aLong, aLong2) -> aLong + aLong2);
     }
 
     // Альбом, в котором максимум рейтинга минимален
