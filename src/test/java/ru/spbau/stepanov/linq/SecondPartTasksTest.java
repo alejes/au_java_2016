@@ -3,13 +3,14 @@ package ru.spbau.stepanov.linq;
 import org.junit.Test;
 
 import java.io.IOException;
-import java.lang.reflect.Array;
-import java.util.*;
+import java.util.Arrays;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.fail;
 import static ru.spbau.stepanov.linq.SecondPartTasks.*;
 
 public class SecondPartTasksTest {
@@ -32,7 +33,7 @@ public class SecondPartTasksTest {
         List<String> au1 = Arrays.asList("111", "222", "7");
         List<String> au2 = Arrays.asList("999", "888", "66");
         List<String> au3 = Arrays.asList("333", "444", "555");
-        Map<String, List<String>> map= new HashMap<>();
+        Map<String, List<String>> map = new HashMap<>();
         map.put("Иванов", au1);
         map.put("Горворов", au2);
         map.put("Птицеворов", au3);
@@ -43,13 +44,12 @@ public class SecondPartTasksTest {
 
     @Test
     public void testCalculateGlobalOrder() {
-        //List<Map<String, Integer>> orders
         Map<String, Integer> tv1 = new HashMap<>(), tv2 = new HashMap<>(), tv3 = new HashMap<>(), res = new HashMap<>();
         tv1.put("Orange", 3);
         tv1.put("Apple", 2);
 
         tv2.put("Apple", 10);
-        tv2.put("Juise", 8);
+        tv2.put("Juice", 8);
 
         tv3.put("Chocolate", 86);
         tv3.put("Apple", 123);
@@ -57,10 +57,9 @@ public class SecondPartTasksTest {
 
         res.put("Chocolate", 86);
         res.put("Apple", 135);
-        res.put("Juise", 8);
+        res.put("Juice", 8);
         res.put("Orange", 4);
 
         assertEquals(res, calculateGlobalOrder(Arrays.asList(tv1, tv2, tv3)));
-
     }
 }

@@ -45,7 +45,7 @@ public final class FirstPartTasks {
                 Collectors.groupingBy(
                         Album::getArtist,
                         Collectors.mapping(
-                                album -> album.getName(),
+                                Album::getName,
                                 Collectors.collectingAndThen(
                                         Collectors.toList(), Function.identity()
                                 )
