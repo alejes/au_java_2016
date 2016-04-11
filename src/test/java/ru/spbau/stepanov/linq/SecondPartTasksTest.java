@@ -3,10 +3,7 @@ package ru.spbau.stepanov.linq;
 import org.junit.Test;
 
 import java.io.IOException;
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
@@ -21,6 +18,13 @@ public class SecondPartTasksTest {
         List<String> result = Arrays.asList("Изысканный бродит жираф.", "И жираф -", "Где трава укрывает жирафа,");
 
         assertEquals(result, findQuotes(files, "жираф"));
+        assertEquals(Collections.EMPTY_LIST, findQuotes(Collections.emptyList(), "жираф"));
+    }
+
+
+    @Test(expected = RuntimeException.class)
+    public void testFindQuotesException() throws IOException {
+        assertEquals(Collections.EMPTY_LIST, findQuotes(Collections.singletonList("unknownFile.txt"), "жираф"));
     }
 
     @Test
@@ -40,7 +44,10 @@ public class SecondPartTasksTest {
 
         assertEquals("Птицеворов", findPrinter(map));
 
+        assertEquals(null, findPrinter(Collections.emptyMap()));
+
     }
+
 
     @Test
     public void testCalculateGlobalOrder() {
@@ -61,5 +68,6 @@ public class SecondPartTasksTest {
         res.put("Orange", 4);
 
         assertEquals(res, calculateGlobalOrder(Arrays.asList(tv1, tv2, tv3)));
+        assertEquals(Collections.emptyMap(), calculateGlobalOrder(Collections.emptyList()));
     }
 }

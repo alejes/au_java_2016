@@ -54,7 +54,6 @@ public class FirstPartTasksTest {
 
     @Test
     public void testSortedFavorites() {
-        System.out.println(Arrays.asList(ALBUM_13, ALBUM_18, ALBUM_10, ALBUM_5, ALBUM_12, ALBUM_4));
         assertEquals(
                 Arrays.asList(ALBUM_13, ALBUM_18, ALBUM_10, ALBUM_5, ALBUM_12, ALBUM_4),
                 sortedFavorites(Stream.of(ALL_ALBUMS)));
@@ -80,7 +79,6 @@ public class FirstPartTasksTest {
 
     @Test
     public void testGroupByArtistMapName() {
-        System.out.println(groupByArtistMapName(Stream.of(ALBUM_2, ALBUM_9, ALBUM_3, ALBUM_10, ALBUM_17, ALBUM_19)));
         assertEquals(
                 ImmutableMap.of(
                         ARTIST_0, Arrays.asList(ALBUM_2.getName(), ALBUM_3.getName()),

@@ -1,6 +1,5 @@
 package ru.spbau.stepanov.linq;
 
-import java.io.IOError;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
@@ -9,10 +8,12 @@ import java.util.List;
 import java.util.Map;
 import java.util.Random;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 public final class SecondPartTasks {
 
-    public static final int COUNT_TESTS = 100000;
+    private static final int COUNT_TESTS = 1000000;
+    private static final Random RANDOM = new Random();
 
     private SecondPartTasks() {
     }
@@ -25,7 +26,7 @@ public final class SecondPartTasks {
             try {
                 return Files.lines(Paths.get(x));
             } catch (IOException e) {
-                throw new IOError(e);
+                throw new RuntimeException(e);
             }
         }).filter(x -> x.contains(sequence)).distinct()
                 .collect(Collectors.toList());
@@ -35,8 +36,11 @@ public final class SecondPartTasks {
     // Стрелок атакует мишень и каждый раз попадает в произвольную точку квадрата.
     // Надо промоделировать этот процесс с помощью класса java.util.Random и посчитать, какова вероятность попасть в мишень.
     public static double piDividedBy4() {
-        Random rnd = new Random();
-        return rnd.doubles(COUNT_TESTS).filter(u -> Math.sqrt(Math.pow(u - 0.5, 2) + Math.pow(rnd.nextDouble() - 0.5, 2)) <= 0.5).count() * 1.0 / COUNT_TESTS;
+        return Stream.generate(
+                () -> Math.sqrt(Math.pow(RANDOM.nextDouble() - 0.5, 2) + Math.pow(RANDOM.nextDouble() - 0.5, 2)))
+                .limit(COUNT_TESTS).filter(u -> u <= 0.5).count() * 1.0 / COUNT_TESTS;
+
+
     }
 
     // Дано отображение из имени автора в список с содержанием его произведений.
@@ -48,7 +52,7 @@ public final class SecondPartTasks {
                                 Map.Entry::getKey,
                                 stringListEntry -> stringListEntry.getValue().stream().collect(Collectors.joining("")).length()
                         )
-                ).entrySet().stream().max(Comparator.comparing(Map.Entry::getValue)).map(Map.Entry::getKey).orElse("");
+                ).entrySet().stream().max(Comparator.comparing(Map.Entry::getValue)).map(Map.Entry::getKey).orElse(null);
     }
 
     // Вы крупный поставщик продуктов. Каждая торговая сеть делает вам заказ в виде Map<Товар, Количество>.
