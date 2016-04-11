@@ -84,6 +84,15 @@ public class PredicateTest {
         Predicate<Number> pMoreThenFive = arg -> arg.intValue() > 5;
         assertFalse(pMoreThenFive.apply(5));
         assertTrue(pMoreThenFive.apply(10.328763));
+
+        assertTrue(EVEN_NUMBER.or(pMoreThenFive).apply(2));
+        assertTrue(EVEN_NUMBER.or(pMoreThenFive).apply(7));
+        assertFalse(EVEN_NUMBER.or(pMoreThenFive).apply(3));
+
+        assertTrue(EVEN_NUMBER.and(pMoreThenFive).apply(8));
+        assertFalse(EVEN_NUMBER.and(pMoreThenFive).apply(7));
+        assertFalse(EVEN_NUMBER.and(pMoreThenFive).apply(3));
+
     }
 
 }

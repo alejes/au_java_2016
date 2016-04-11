@@ -16,6 +16,10 @@ public class CollectionsTest {
         List<Integer> resultList = Arrays.asList(6, 7, 8, 9, 10, 11);
 
         assertEquals(resultList, Collections.map(arg -> arg + 5, inputList));
+
+        Function1<Number, Number> sqrt = x -> x.intValue() * x.intValue();
+        List<Number> resultNumberList = Arrays.asList(1, 4, 9, 16, 25, 36);
+        assertEquals(resultNumberList, Collections.map(sqrt, inputList));
     }
 
     @Test
@@ -24,6 +28,11 @@ public class CollectionsTest {
         List<Integer> resultList = Arrays.asList(2, 4, 6);
 
         assertEquals(resultList, Collections.filter(arg -> arg % 2 == 0, inputList));
+
+        Predicate<Number> sqrtTest = x -> x.intValue() * x.intValue() > 20;
+
+        List<Number> resultNumberList = Arrays.asList(5, 6);
+        assertEquals(resultNumberList, Collections.filter(sqrtTest, inputList));
     }
 
     @Test
@@ -32,6 +41,11 @@ public class CollectionsTest {
         List<Integer> resultList = Arrays.asList(2, 4, 6, 8, 10);
 
         assertEquals(resultList, Collections.takeWhile(arg -> arg % 2 == 0, inputList));
+
+        Predicate<Number> sqrtTest = x -> x.intValue() * x.intValue() < 20;
+
+        List<Number> resultNumberList = Arrays.asList(2, 4);
+        assertEquals(resultNumberList, Collections.takeWhile(sqrtTest, inputList));
     }
 
     @Test
@@ -40,6 +54,11 @@ public class CollectionsTest {
         List<Integer> resultList = Arrays.asList(1, 3, 5, 7, 9, 11);
 
         assertEquals(resultList, Collections.takeUnless(arg -> arg % 2 == 0, inputList));
+
+        Predicate<Number> sqrtTest = x -> x.intValue() * x.intValue() > 20;
+
+        List<Number> resultNumberList = Arrays.asList(1, 3);
+        assertEquals(resultNumberList, Collections.takeUnless(sqrtTest, inputList));
     }
 
     @Test

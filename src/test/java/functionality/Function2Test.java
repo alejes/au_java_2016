@@ -23,6 +23,10 @@ public class Function2Test {
 
         Function2<Integer, Integer, Integer> plustm10 = plus.compose(m10);
         assertEquals(230, (int) plustm10.apply(10, 13));
+
+        Function1<Number, String> tStr = arg -> "<" + arg.toString() + ">";
+        assertEquals("<230>", plustm10.compose(tStr).apply(10, 13));
+
     }
 
     @Test
