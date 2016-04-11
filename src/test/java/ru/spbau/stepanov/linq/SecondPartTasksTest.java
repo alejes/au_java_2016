@@ -43,9 +43,7 @@ public class SecondPartTasksTest {
         map.put("Птицеворов", au3);
 
         assertEquals("Птицеворов", findPrinter(map));
-
         assertEquals(null, findPrinter(Collections.emptyMap()));
-
     }
 
 
