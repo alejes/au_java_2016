@@ -26,12 +26,15 @@ public final class FirstPartTasks {
 
     // Список треков, отсортированный лексикографически по названию, включающий все треки альбомов из 'albums'
     public static List<String> allTracksSorted(Stream<Album> albums) {
-        return albums.flatMap(alb -> alb.getTracks().stream()).map(Track::getName).sorted().collect(Collectors.toList());
+        return albums.flatMap(alb -> alb.getTracks().stream())
+                .map(Track::getName).sorted().collect(Collectors.toList());
     }
 
     // Список альбомов, в которых есть хотя бы один трек с рейтингом более 95, отсортированный по названию
     public static List<Album> sortedFavorites(Stream<Album> s) {
-        return s.filter(alb -> alb.getTracks().stream().anyMatch(x -> x.getRating() > 95)).sorted((x, y) -> x.getName().compareTo(y.getName())).collect(Collectors.toList());
+        return s.filter(alb -> alb.getTracks().stream().anyMatch(x -> x.getRating() > 95))
+                .sorted((x, y) -> x.getName().compareTo(y.getName()))
+                .collect(Collectors.toList());
     }
 
     // Сгруппировать альбомы по артистам
@@ -46,9 +49,7 @@ public final class FirstPartTasks {
                         Album::getArtist,
                         Collectors.mapping(
                                 Album::getName,
-                                Collectors.collectingAndThen(
-                                        Collectors.toList(), Function.identity()
-                                )
+                                Collectors.toList()
                         )
                 ));
     }
@@ -74,29 +75,27 @@ public final class FirstPartTasks {
                         Function.identity(),
                         Collectors.counting())
         ).entrySet().stream().
-                map(
-                        albumLongEntry ->
-                                albumLongEntry.getValue() > 0 ? albumLongEntry.getValue() - 1 : 0
-                ).reduce((long) 0, (aLong, aLong2) -> aLong + aLong2);
+                mapToLong(
+                        albumLongEntry -> albumLongEntry.getValue() - 1
+                ).sum();
     }
 
     // Альбом, в котором максимум рейтинга минимален
     // (если в альбоме нет ни одного трека, считать, что максимум рейтинга в нем --- 0)
     public static Optional<Album> minMaxRating(Stream<Album> albums) {
-
-        return albums.collect(
-                Collectors.groupingBy(
-                        Function.identity(),
-                        Collectors.mapping(
-                                album -> album.getTracks().stream().mapToInt(Track::getRating).max().orElse(0),
-                                Collectors.collectingAndThen(
-                                        Collectors.toList(), trackList -> trackList.get(0)
-                                )))).entrySet().stream().sorted((o1, o2) -> o1.getValue().compareTo(o2.getValue())).findFirst().map(Map.Entry::getKey);
+        return albums.min(
+                (o11, o21) -> o11.getTracks().stream().mapToInt(Track::getRating).max().orElse(0)
+                        - o21.getTracks().stream().mapToInt(Track::getRating).max().orElse(0)
+        );
     }
 
     // Список альбомов, отсортированный по убыванию среднего рейтинга его треков (0, если треков нет)
     public static List<Album> sortByAverageRating(Stream<Album> albums) {
-        return albums.sorted(Comparator.comparing(o1 -> ((Album) o1).getTracks().stream().mapToInt(Track::getRating).average().orElse(0)).reversed()).collect(Collectors.toList());
+        return albums.sorted(
+                Comparator.comparingDouble(
+                        (o1 -> -o1.getTracks().stream()
+                                .mapToInt(Track::getRating).average().orElse(0))))
+                .collect(Collectors.toList());
     }
 
     // Произведение всех чисел потока по модулю 'modulo'

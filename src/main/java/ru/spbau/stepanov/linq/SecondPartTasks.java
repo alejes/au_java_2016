@@ -1,6 +1,7 @@
 package ru.spbau.stepanov.linq;
 
 import java.io.IOException;
+import java.io.UncheckedIOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.Comparator;
@@ -26,7 +27,7 @@ public final class SecondPartTasks {
             try {
                 return Files.lines(Paths.get(x));
             } catch (IOException e) {
-                throw new RuntimeException(e);
+                throw new UncheckedIOException(e);
             }
         }).filter(x -> x.contains(sequence)).distinct()
                 .collect(Collectors.toList());
@@ -46,25 +47,25 @@ public final class SecondPartTasks {
     // Дано отображение из имени автора в список с содержанием его произведений.
     // Надо вычислить, чья общая длина произведений наибольшая.
     public static String findPrinter(Map<String, List<String>> compositions) {
-        return compositions.entrySet().stream().
-                collect(
-                        Collectors.toMap(
-                                Map.Entry::getKey,
-                                stringListEntry -> stringListEntry.getValue().stream().collect(Collectors.joining("")).length()
-                        )
-                ).entrySet().stream().max(Comparator.comparing(Map.Entry::getValue)).map(Map.Entry::getKey).orElse(null);
+        return compositions.keySet().stream().
+                max(
+                        Comparator.comparing(
+                                stringListEntry -> compositions.get(stringListEntry).stream()
+                                        .mapToInt(String::length).sum()))
+                .orElse(null);
     }
 
     // Вы крупный поставщик продуктов. Каждая торговая сеть делает вам заказ в виде Map<Товар, Количество>.
     // Необходимо вычислить, какой товар и в каком количестве надо поставить.
     public static Map<String, Integer> calculateGlobalOrder(List<Map<String, Integer>> orders) {
-        return orders.stream().flatMap(x -> x.entrySet().stream()).collect(Collectors.toList()).stream().
+        return orders.stream().flatMap(x -> x.entrySet().stream()).
                 collect(
                         Collectors.groupingBy(
                                 Map.Entry::getKey,
                                 Collectors.collectingAndThen(
                                         Collectors.toList(),
-                                        entries -> entries.stream().mapToInt(Map.Entry::getValue).sum()
+                                        entries -> entries.stream()
+                                                .collect(Collectors.summingInt(Map.Entry::getValue))
                                 )
                         )
                 );

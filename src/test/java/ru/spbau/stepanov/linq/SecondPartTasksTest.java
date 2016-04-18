@@ -3,6 +3,7 @@ package ru.spbau.stepanov.linq;
 import org.junit.Test;
 
 import java.io.IOException;
+import java.io.UncheckedIOException;
 import java.util.*;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
@@ -14,15 +15,16 @@ public class SecondPartTasksTest {
 
     @Test
     public void testFindQuotes() throws IOException {
-        List<String> files = IntStream.range(1, 4).mapToObj(s -> "src/test/resources/findQuotes" + s + ".txt").collect(Collectors.toList());
+        List<String> files = IntStream.range(1, 4).mapToObj(s -> "src/test/resources/findQuotes" + s + ".txt")
+                .collect(Collectors.toList());
         List<String> result = Arrays.asList("Изысканный бродит жираф.", "И жираф -", "Где трава укрывает жирафа,");
 
         assertEquals(result, findQuotes(files, "жираф"));
-        assertEquals(Collections.EMPTY_LIST, findQuotes(Collections.emptyList(), "жираф"));
+        assertEquals(Collections.emptyList(), findQuotes(Collections.emptyList(), "жираф"));
     }
 
 
-    @Test(expected = RuntimeException.class)
+    @Test(expected = UncheckedIOException.class)
     public void testFindQuotesException() throws IOException {
         assertEquals(Collections.EMPTY_LIST, findQuotes(Collections.singletonList("unknownFile.txt"), "жираф"));
     }
@@ -49,7 +51,11 @@ public class SecondPartTasksTest {
 
     @Test
     public void testCalculateGlobalOrder() {
-        Map<String, Integer> tv1 = new HashMap<>(), tv2 = new HashMap<>(), tv3 = new HashMap<>(), res = new HashMap<>();
+        Map<String, Integer> tv1 = new HashMap<>();
+        Map<String, Integer> tv2 = new HashMap<>();
+        Map<String, Integer> tv3 = new HashMap<>();
+        Map<String, Integer> res = new HashMap<>();
+
         tv1.put("Orange", 3);
         tv1.put("Apple", 2);
 
